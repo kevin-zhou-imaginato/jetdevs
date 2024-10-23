@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jetdevs</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f9;
+      }
+      form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        width: 768px;
+      }
+      label {
+        display: block;
+      }
+      input[type='number'],
+      select,
+      input[type='submit'] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+      .checkbox-group {
+        margin-bottom: 10px;
+      }
+      .radio-group {
+        margin-bottom: 10px;
+      }
+      input[type='submit'] {
+        background: #5cb85c;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 12px;
+      }
+      input[type='submit']:hover {
+        background: #4cae4c;
+      }
+      .row {
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form">
+      <div class="row">
+        <label for="company_name">Company</label>
+        <input type="text" id="company_name" name="company_name" required />
+      </div>
+
+      <div class="row">
+        <label for="start_work_from">Start Work From</label>
+        <input
+          type="number"
+          id="start_work_from"
+          name="start_work_from"
+          required
+        />
+      </div>
+
+      <div class="row">
+        <label for="english_proficiency">English Proficiency</label>
+        <select id="english_proficiency" name="english_proficiency" required>
+          <option value="">Pick a value</option>
+          <option value="native">Native</option>
+          <option value="fluent">Fluent</option>
+          <option value="conversational">Conversational</option>
+          <option value="beginner">Beginner</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label for="position">Position</label>
+        <input type="text" id="position" name="position" required />
+      </div>
+
+      <div class="row radio-group">
+        <label>Jetdevs Certified</label>
+        <label
+          ><input type="radio" name="jetdevs_certified" value="1" />Yes</label
+        >
+        <label
+          ><input
+            type="radio"
+            name="jetdevs_certified"
+            value="0"
+            required
+          />No</label
+        >
+      </div>
+
+      <div class="row">
+        <label for="avg_project_duration">Average Project Duration</label>
+        <input
+          type="number"
+          id="avg_project_duration"
+          name="avg_project_duration"
+          required
+        />
+      </div>
+
+      <div class="row">
+        <label for="level_id">Level</label>
+        <input type="number" id="level_id" name="level_id" required />
+      </div>
+
+      <div class="row">
+        <label for="grade_name">Grade</label>
+        <select id="grade_name" name="grade_name" required>
+          <option value="">Pick a level</option>
+          <option value="T0">T0</option>
+          <option value="T1">T1</option>
+          <option value="T2">T2</option>
+          <option value="T3">T3</option>
+          <option value="T4">T4</option>
+          <option value="T5">T5</option>
+          <option value="T6">T6</option>
+          <option value="T7">T7</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label for="location">Country / Location</label>
+        <input type="text" id="location" name="location" required />
+      </div>
+
+      <input type="submit" value="Commit" />
+    </form>
+
+    <script>
+      document
+        .getElementById('form')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          const formData = new FormData(event.target);
+          const data = {};
+
+          formData.forEach((value, key) => {
+            data[key] = key === 'start_work_from' ? parseInt(value) : value;
+          });
+
+          fetch('http://141.11.213.133:8888', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data[0] === 1) {
+                alert('The candidate is GOOD');
+              } else {
+                alert('The candidate is not good');
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+              alert('Something went wrong');
+            });
+        });
+    </script>
+  </body>
+</html>
